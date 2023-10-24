@@ -1,10 +1,10 @@
-## Final_ProjectCS122
+# CS 122 Final Project: {insert project name}
 
-#Project Title: 
+Authors: Manasi Nekkar and 
 
-#Authors: Manasi Nekkar and 
+## Project Description
 
-#Project Description
-
-#Project Outline and Plan
-
+## Project Outline and Plan
+interface plan, 
+data collection and storage plan (written by author 1)
+data analysis and visualization plan
