@@ -8,6 +8,8 @@ Analyze the Airbnb listing service for vacation house rentals. Our goal is to ga
 
 ## Project Outline and Plan
 ### Interface Plan
+Our approach involves utilizing React and Tailwind CSS for the frontend, with Flask serving as the backend technology
+Additionally, we are considering the use of Docker for containerization.
 
 
 ### Data Collection and Storage Plan
