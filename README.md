@@ -7,13 +7,11 @@ Analyze the Airbnb listing service for vacation house rentals. Our goal is to ga
 
 
 ## Project Outline and Plan
-<<<<<<< HEAD
+
 ### Interface Plan
 Our approach involves utilizing React and Tailwind CSS for the frontend, with Flask serving as the backend technology
 Additionally, we are considering the use of Docker for containerization.
-=======
-### Interface Plan:
->>>>>>> 91cfaf8ad70dd1378c1148ff85241ba371559f63
+
 
 ### Data Collection and Storage Plan:
 Airbnb does not have a public API, which will allow us to easily find information about listing prices in relation to location. Our current plan us to code a webscraper from the Airbnb website. We are planning on hosting our information in a csv file, which can easily be accessed for the data analysis and visualization part of our project.
