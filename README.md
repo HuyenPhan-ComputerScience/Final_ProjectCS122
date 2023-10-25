@@ -7,6 +7,10 @@ Analyze the Airbnb listing service for vacation house rentals. Our goal is to ga
 
 
 ## Project Outline and Plan
-interface plan, 
-data collection and storage plan (written by author 1)
-data analysis and visualization plan
+### Interface Plan
+
+
+### Data Collection and Storage Plan
+
+### Data Analysis and Visualization Plan: 
+Currently, we are planning on focusing on the price and location for Airbnb listings across the world. We want to be able to create a map with dots for every Airbnb listing. These dots will be color coordinated according to their price ranges. 
