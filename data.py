@@ -7,7 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/historical', methods=['GET', 'POST'])
 def historical_data():
     if request.method == 'POST':
         stock_symbol = request.form['stock_symbol']
