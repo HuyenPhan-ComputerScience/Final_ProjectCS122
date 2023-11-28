@@ -20,50 +20,99 @@ def home():
     return render_template('home.html',column_names=df.columns.values, row_data=list(df.values.tolist()),
                            link_column="Symbol", zip=zip)
  
-
+#ploting data by selecting days
 @app.route('/ticker/<ticker>', methods=['GET', 'POST'])
 def ticker(ticker):
     if request.method == 'GET':
         return render_template('ticker_form.html', stock_symbol=ticker)
     else:
-        stock_symbol =  ticker
+        stock_symbol = ticker
         start_date = request.form['start_date']
-        end_date = request.form['end_date']
-        print(stock_symbol, start_date, end_date)
+        end_date = request.form['end_date']  
         # Fetch historical data using yfinance
         df = yf.download(stock_symbol, start=start_date, end=end_date)
 
-        # # Check if the DataFrame is empty
+        # Check if the DataFrame is empty
         if df.empty:
             return render_template('ticker.html', stock_symbol=stock_symbol, data=None, plot_url=None)
-        
-        print(df)
-            # Process data as needed
-        # For example, you can convert the DataFrame to a list of dictionaries
+
+        # Process data as needed
         data = df.reset_index().to_dict(orient='records')
-
-        # Plotting the data
-        plt.figure(figsize=(10, 6))
-        plt.plot(df.index, df["Close"], label='Closing Price')
-        plt.xlabel('Date')
-        plt.ylabel('Closing Price')
-        plt.title(f'Historical Stock Data for {ticker}')
-        plt.legend()
-
-        # Save the plot to a BytesIO object
-        img = BytesIO()
-        plt.savefig(img, format='png')
-        img.seek(0)
-
-        # Encode the image as base64 and convert it to a string
-        plot_url = base64.b64encode(img.getvalue()).decode()
+        plot_url = generate_plot(df, stock_symbol)
 
         return render_template('ticker.html', stock_symbol=stock_symbol, data=data, plot_url=plot_url)
+    
 
-#getting information about the company
+#ploting data in 2 5 30 days
+@app.route('/plot/<ticker>', methods=["GET"])
+def plot(ticker):
+    stock_symbol = ticker
+    selected_days = request.args.get('days', '30')  # Use request.args for query parameters
+
+    # Define the start and end dates based on the selected_days
+    if selected_days == '10':
+        end_date = pd.Timestamp.now().date()
+        start_date = end_date - pd.DateOffset(days=10)
+    elif selected_days == '2':
+        end_date = pd.Timestamp.now().date()
+        start_date = end_date - pd.DateOffset(days=2)
+    elif selected_days == '15':
+        end_date = pd.Timestamp.now().date()
+        start_date = end_date - pd.DateOffset(days=15)
+    elif selected_days == '30':
+        end_date = pd.Timestamp.now().date()
+        start_date = end_date - pd.DateOffset(days=30)
+    else:
+        end_date = pd.Timestamp.now().date()
+        start_date = end_date - pd.DateOffset(days=30)
+
+    # Fetch historical data using yfinance
+    df = yf.download(stock_symbol, start=start_date, end=end_date)
+
+    # Check if the DataFrame is empty
+    if df.empty:
+        return render_template('ticker_form.html', stock_symbol=stock_symbol, plot_url=None)
+
+    # Process data as needed
+  
+
+    # Generate and save the plot
+    plot_url = generate_plot(df, stock_symbol)
+
+    return render_template('ticker_form.html', stock_symbol=stock_symbol, plot_url=plot_url)
 
 
+def generate_plot(df, ticker):
+    # Plotting the data
+    plt.figure(figsize=(10, 6))
+    plt.plot(df.index, df["Close"], label='Closing Price')
+    plt.xlabel('Date')
+    plt.ylabel('Closing Price')
+    plt.title(f'Historical Stock Data for {ticker}')
+    plt.legend()
 
+    # Save the plot to a BytesIO object
+    img = BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+
+    # Encode the image as base64 and convert it to a string
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    return plot_url
+
+
+# searching symbol with the same alphabet
+@app.route('/search', methods=['POST'])
+def search():
+    
+    search = request.form['search']
+    df=pd.read_csv('data/sp500.csv')
+    #getting symbol with same fist alphabet
+    df1=df[df['Symbol'].str.startswith(search)]
+    return render_template('search.html',column_names=df1.columns.values, row_data=list(df1.values.tolist()),
+                           link_column="Symbol", zip=zip)
+   
 
 
 
