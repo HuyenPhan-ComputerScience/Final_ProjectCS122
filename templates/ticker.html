@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Historical Stock Data</title>
+</head>
+
+<body>
+    <h2>Historical Stock Data for {{ stock_symbol }}</h2>
+
+    <h3>Table of Historical Data</h3>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Open</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Close</th>
+                <th>Adj Close</th>
+                <th>Volume</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row['Date'] }}</td>
+                <td>{{ row['Open'] }}</td>
+                <td>{{ row['High'] }}</td>
+                <td>{{ row['Low'] }}</td>
+                <td>{{ row['Close'] }}</td>
+                <td>{{ row['Adj Close'] }}</td>
+                <td>{{ row['Volume'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Plot of Closing Prices</h3>
+    <img src="data:image/png;base64,{{ plot_url }}" alt="Closing Price Plot">
+</body>
+
+</html>
