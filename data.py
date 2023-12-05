@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use('agg')
 app = Flask(__name__)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     
@@ -48,6 +49,7 @@ def ticker(ticker):
 def plot(ticker):
     stock_symbol = ticker
     selected_days = request.args.get('days', '30')  # Use request.args for query parameters
+    
 
     # Define the start and end dates based on the selected_days
     if selected_days == '10':
@@ -74,12 +76,12 @@ def plot(ticker):
         return render_template('ticker_form.html', stock_symbol=stock_symbol, plot_url=None)
 
     # Process data as needed
-  
+    # (You might want to add more code here based on what you want to do with the data)
 
     # Generate and save the plot
-    plot_url = generate_plot(df, stock_symbol)
+    plot_url = generate_plot(df, stock_symbol)  # Assuming you have a function named generate_plot
 
-    return render_template('ticker_form.html', stock_symbol=stock_symbol, plot_url=plot_url)
+    return render_template('ticker_form.html', stock_symbol=stock_symbol, plot_url=plot_url,selected_days=selected_days)
 
 
 def generate_plot(df, ticker):
@@ -122,7 +124,7 @@ def web_content_div(web_content, class_path):
     web_content_div = web_content.find('div', class_=class_path)
     try:
         fin_stream = web_content_div.find_all('fin-streamer')  
-        texts = [fin.get_text() for fin in fin_stream]
+        texts = [fin_stream[0].get_text(), fin_stream[1].get_text(), fin_stream[2].get_text()]
     except AttributeError:
         texts = []
     return texts
@@ -143,13 +145,29 @@ def real_time_price(stock_code):
         price, change, percent = None, None, None
     return price, change, percent
 
-@app.route('/realtime',methods=['GET', 'POST'])
+@app.route('/realtime', methods=['GET'])
 def index():
-    if request.method == 'POST':
-        stock_code = request.form['stock_code']
-        price, change, percent = real_time_price(stock_code)
-        return render_template('realtime.html', price=price, change=change, percent=percent)
-    return render_template('realtime_form.html')
+    if request.method == 'GET':
+        stock_code = request.args.get('stock_code')
+        if stock_code:
+            price, change, percent = real_time_price(stock_code)
+            return render_template('realtime.html', stock_code=stock_code, price=price, change=change, percent=percent)
+        # else:
+        #     # Handle the case where no stock code is provided
+        #     return render_template('error.html', error_message="Please provide a stock code.")
+#finding top 5 companies in the same GICS sectorwith the Ticker is chosen
+@app.route('/top5/<ticker>', methods=['POST'])
+def top5(ticker):
+    df=pd.read_csv('data/sp500.csv')
+    df1=df[df['Symbol']==ticker]
+    sector=df1['GICS Sector'].values[0]
+    df2=df[df['GICS Sector']==sector]
+    df3=df2.sort_values(by=['CIK'],ascending=False)
+    df4=df3.head(5)
+    return render_template('top5.html',column_names=df4.columns.values, row_data=list(df4.values.tolist()),
+                           link_column="Symbol", zip=zip)
+
+
 
 
 
