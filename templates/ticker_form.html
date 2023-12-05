@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <!DOCTYPE html>
-    <html>
-
-    <head>
-        <title>Historical Data Form</title>
-    </head>
+    <title>Historical Data Form</title>
+</head>
 
 <body>
     <h2>Historical Data Form</h2>
+    <form method="get" action="/plot/{{stock_symbol}}">
+        <!-- default image by 30days -->
+
+
+
+
+
+
+        {% if plot_url %}
+        <img src="data:image/png;base64,{{ plot_url }}" alt="Closing Price Plot">
+        {% else %}
+        <p>No data available for {{ stock_symbol }}</p>
+        {% endif %}
+        <button type="submit" name="days" value="10">Last 10 Days</button>
+        <button type="submit" name="days" value="2">Last 2 Day</button>
+        <button type="submit" name="days" value="15">Last 15 Days</button>
+        <button type="submit" name="days" value="30">Last 30 Days</button>
+    </form>
+    <br />
     <form method="post" action="/ticker/{{stock_symbol}}">
         <label for="stock_symbol">Stock Symbol:</label>
         <label>{{stock_symbol}}</label>
         <br />
+
 
         <label for="start_date">Start Date:</label>
         <input type="date" name="start_date" required><br>
@@ -24,26 +40,46 @@
 
         <input type="submit" value="Get Historical Data">
     </form>
-</body>
 
-</html>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Historical Data</title>
-</head>
+    <form method="post" action="/top5/{{ stock_symbol }}" id="top5Form">
 
-<body>
-    <h1>Historical Data</h1>
-    <form method="post" action="/historical">
-        <label for="stock_symbol">Stock Symbol:</label>
-        <input type="text" name="stock_symbol" required>
-        <label for="start_date">Start Date:</label>
-        <input type="date" name="start_date" required>
-        <label for="end_date">End Date:</label>
-        <input type="date" name="end_date" required>
-        <button type="submit">Get Historical Data</button>
+        <button type="submit" onclick="showAdditionalInfo()">Top 5</button>
+        <div id="additionalInfo" style="display: none">
+            <table>
+
+                {% for row in row_data %}
+                <tr>
+                    {% for col, row_ in zip(column_names, row) %}
+                    {% if col == link_column %}
+                    <td>
+                        <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
+                    </td>
+                    {% else %}
+                    <td>{{ row_ }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <button type="button" onclick="hideAdditionalInfo()">Hide</button>
     </form>
+
+    <script>
+        function showAdditionalInfo() {
+            document.getElementById("additionalInfo").style.display = "block";
+        }
+
+        function hideAdditionalInfo() {
+            document.getElementById("additionalInfo").style.display = "none";
+        }
+    </script>
+    <form action="/realtime" method="get">
+        <label for="stock_code">Enter Stock Symbol:</label>
+        <input type="text" id="stock_code" name="stock_code" required>
+        <button type="submit">Get Real-time Price</button>
+    </form>
+
 </body>
 
 </html>
