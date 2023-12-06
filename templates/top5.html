@@ -8,22 +8,36 @@
 </head>
 
 <body>
-    <table>
-
-        {% for row in row_data %}
-        <tr>
-            {% for col, row_ in zip(column_names, row) %}
-            {% if col == link_column %}
-            <td>
-                <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
-            </td>
-            {% else %}
-            <td>{{ row_ }}</td>
-            {% endif %}
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class="table-responsive">
+        <h1 class="text-center">Five Stock Suggestions Within The Same GICS</h1>
+        <table class="table table-striped" border="2">
+            <thead>
+                <tr>
+                    {% for col in column_names %}
+                    <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in row_data %}
+                <tr>
+                    {% for col, row_ in zip(column_names, row) %}
+                    {% if col == link_column %}
+                    <td>
+                        <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
+                    </td>
+                    {% else %}
+                    <td>{{ row_ }}</td>
+                    {% endif %}
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endblock %}
 
 </body>
 

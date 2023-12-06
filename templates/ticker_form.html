@@ -12,6 +12,7 @@
     {% block content %}
     <div class="container-lg">
         <h2 class="text-center p-2">Historical Data</h2>
+
         <div class="container-sm">
             <form method="get" action="/plot/{{stock_symbol}}">
                 <!-- default image by 30days -->
@@ -60,7 +61,18 @@
             <br />
             <input type="submit" value="Get Historical Data" class="btn btn-primary p-2"
                 style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
+            <script>
+                // Function to clear start_date and end_date input fields
+                function clearDates() {
+                    document.getElementById('start_date').value = '';
+                    document.getElementById('end_date').value = '';
+                }
+
+                // Execute the function when the page is loaded
+                window.onload = clearDates;
+            </script>
         </form>
+
         <br />
 
         <p>Enhance Enthusiasm in Stocks within Same (GICS) sector.<b>Click Button below</b></p>
