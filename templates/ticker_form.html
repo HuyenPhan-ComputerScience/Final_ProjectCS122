@@ -2,83 +2,83 @@
 <html>
 
 <head>
-    <title>Historical Data Form</title>
+    <title>Historical Data </title>
 </head>
 
 <body>
-    <h2>Historical Data Form</h2>
-    <form method="get" action="/plot/{{stock_symbol}}">
-        <!-- default image by 30days -->
-
-
-
-
-
-
-        {% if plot_url %}
-        <img src="data:image/png;base64,{{ plot_url }}" alt="Closing Price Plot">
-        {% else %}
-        <p>No data available for {{ stock_symbol }}</p>
-        {% endif %}
-        <button type="submit" name="days" value="10">Last 10 Days</button>
-        <button type="submit" name="days" value="2">Last 2 Day</button>
-        <button type="submit" name="days" value="15">Last 15 Days</button>
-        <button type="submit" name="days" value="30">Last 30 Days</button>
-    </form>
-    <br />
-    <form method="post" action="/ticker/{{stock_symbol}}">
-        <label for="stock_symbol">Stock Symbol:</label>
-        <label>{{stock_symbol}}</label>
+    {% extends 'base.html' %}
+    {% block content %}
+    <div class="container-lg">
+        <h2 class="text-center p-2">Historical Data</h2>
+        <div class="container-sm">
+            <form method="get" action="/plot/{{stock_symbol}}">
+                <!-- default image by 30days -->
+                {% if plot_url %}
+                <img src="data:image/png;base64,{{ plot_url }}" alt="Closing Price Plot" class="img-fluid">
+                {% else %}
+                <p>No data available for {{ stock_symbol }}</p>
+                {% endif %}
+                <div>
+                    <p>Select these buttons or Select the days seeing the stock historical</p>
+                    <button type="submit" name="days" value="10" class="btn btn-primary p-2">Last 10 Days</button>
+                    <button type="submit" name="days" value="2" class="btn btn-primary p-2">Last 2 Days</button>
+                    <button type="submit" name="days" value="15" class="btn btn-primary p-2">Last 15 Days</button>
+                    <button type="submit" name="days" value="30" class="btn btn-primary p-2">Last 30 Days</button>
+                </div>
+            </form>
+        </div>
+        <br />
+        <form method="post" action="/ticker/{{stock_symbol}}">
+            <div class="form-group">
+                <label for="stock_symbol">Stock Symbol:</label>
+                <label>{{stock_symbol}}</label>
+            </div>
+            <div class="form-group">
+                <label for="start_date" class="p-2">Select Start Date:</label>
+                <input type="date" name="start_date" required class="form-control p-2">
+            </div>
+            <div class="form-group">
+                <label for="end_date" class="p-2">Select End Date:</label>
+                <input type="date" name="end_date" required class="form-control p-2">
+            </div>
+            <br />
+            <input type="submit" value="Get Historical Data" class="btn btn-primary p-2">
+        </form>
         <br />
 
+        <p>Enhance Enthusiasm in Stocks within Same (GICS) sector.<b>Click Button below</b></p>
 
-        <label for="start_date">Start Date:</label>
-        <input type="date" name="start_date" required><br>
 
-        <label for="end_date">End Date:</label>
-        <input type="date" name="end_date" required><br>
+        <form action="/top5/{{ stock_symbol }}">
+            <button type="submit" class="btn btn-primary p-2">Top 5</button>
+        </form>
 
-        <input type="submit" value="Get Historical Data">
-    </form>
-
-    <form method="post" action="/top5/{{ stock_symbol }}" id="top5Form">
-
-        <button type="submit" onclick="showAdditionalInfo()">Top 5</button>
-        <div id="additionalInfo" style="display: none">
-            <table>
-
-                {% for row in row_data %}
-                <tr>
-                    {% for col, row_ in zip(column_names, row) %}
-                    {% if col == link_column %}
-                    <td>
-                        <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
-                    </td>
-                    {% else %}
-                    <td>{{ row_ }}</td>
-                    {% endif %}
-                    {% endfor %}
-                </tr>
+        <table class="table">
+            {% for row in row_data %}
+            <tr>
+                {% for col, row_ in zip(column_names, row) %}
+                {% if col == link_column %}
+                <td>
+                    <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
+                </td>
+                {% else %}
+                <td>{{ row_ }}</td>
+                {% endif %}
                 {% endfor %}
-            </table>
-        </div>
-        <button type="button" onclick="hideAdditionalInfo()">Hide</button>
-    </form>
+            </tr>
+            {% endfor %}
+        </table>
 
-    <script>
-        function showAdditionalInfo() {
-            document.getElementById("additionalInfo").style.display = "block";
-        }
+        <form action="/realtime" method="get">
+            <div class="form-group">
+                <label for="stock_code" class="p-2">Enter Stock Symbol:</label>
+                <input type="text" id="stock_code" name="stock_code" required class="form-control">
+            </div>
 
-        function hideAdditionalInfo() {
-            document.getElementById("additionalInfo").style.display = "none";
-        }
-    </script>
-    <form action="/realtime" method="get">
-        <label for="stock_code">Enter Stock Symbol:</label>
-        <input type="text" id="stock_code" name="stock_code" required>
-        <button type="submit">Get Real-time Price</button>
-    </form>
+            <button type="submit" class="btn btn-primary p-2">Get Real-time Price</button>
+        </form>
+    </div>
+    {% endblock %}
 
 </body>
 

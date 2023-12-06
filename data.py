@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,redirect
 import yfinance as yf
 import pandas as pd
 import datetime
@@ -156,17 +156,20 @@ def index():
         #     # Handle the case where no stock code is provided
         #     return render_template('error.html', error_message="Please provide a stock code.")
 #finding top 5 companies in the same GICS sectorwith the Ticker is chosen
-@app.route('/top5/<ticker>', methods=['POST'])
+@app.route('/top5/<ticker>', methods=['POST', 'GET'])
 def top5(ticker):
-    df=pd.read_csv('data/sp500.csv')
-    df1=df[df['Symbol']==ticker]
-    sector=df1['GICS Sector'].values[0]
-    df2=df[df['GICS Sector']==sector]
-    df3=df2.sort_values(by=['CIK'],ascending=False)
-    df4=df3.head(5)
-    return render_template('top5.html',column_names=df4.columns.values, row_data=list(df4.values.tolist()),
-                           link_column="Symbol", zip=zip)
+    import pandas as pd
 
+    
+    df = pd.read_csv('data/sp500.csv')
+    df1 = df[df['Symbol'] == ticker]
+    sector = df1['GICS Sector'].values[0]
+    df2 = df[df['GICS Sector'] == sector]
+    df3 = df2.sort_values(by=['CIK'], ascending=False)
+    df4 = df3.head(5)
+
+    return render_template('top5.html', column_names=df4.columns.values, row_data=list(df4.values.tolist()),
+                           link_column="Symbol", zip=zip)
 
 
 

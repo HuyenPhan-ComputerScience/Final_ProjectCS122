@@ -32,7 +32,7 @@
 </head>
 
 <body>
-    <h1>Real-Time Stock Data for {{ stock_symbol }}</h1>
+    <h1>Real-Time Stock Data for {{ stock_code }}</h1>
     <!-- <form action="/realtime//{{ stock_code }}" method="post">
          <label for="stockSymbol">Enter Stock Symbol:</label>
         <input type="text" id="stockSymbol" name="stock_symbol" required> -->
@@ -40,8 +40,8 @@
     </form>   -->
 
 
-    {% if stock_symbol %}
-    <p>Stock Symbol: {{ stock_symbol }}</p>
+    {% if stock_code %}
+    <p>Stock Symbol: {{ stock_code }}</p>
     <p>Price: {{ price }}</p>
     <p>Change: {{ change }}</p>
     <p>Percent Change: {{ percent }}</p>
