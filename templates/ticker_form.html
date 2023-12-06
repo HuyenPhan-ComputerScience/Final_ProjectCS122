@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historical Data </title>
 </head>
 
@@ -18,12 +20,26 @@
                 {% else %}
                 <p>No data available for {{ stock_symbol }}</p>
                 {% endif %}
+                <br />
+                <p>Select these buttons or Select the days seeing the stock historical</p>
                 <div>
-                    <p>Select these buttons or Select the days seeing the stock historical</p>
-                    <button type="submit" name="days" value="10" class="btn btn-primary p-2">Last 10 Days</button>
-                    <button type="submit" name="days" value="2" class="btn btn-primary p-2">Last 2 Days</button>
-                    <button type="submit" name="days" value="15" class="btn btn-primary p-2">Last 15 Days</button>
-                    <button type="submit" name="days" value="30" class="btn btn-primary p-2">Last 30 Days</button>
+
+
+                    <button type="submit" name="days" value="10" class="btn btn-primary  p-2"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Last
+                        10
+                        Days</button>
+                    <button type="submit" name="days" value="2" class="btn btn-primary  p-2"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Last
+                        2 Days</button>
+                    <button type="submit" name="days" value="15" class="btn btn-primary  p-2"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Last
+                        15
+                        Days</button>
+                    <button type="submit" name="days" value="30" class="btn btn-primary  p-2"
+                        style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Last
+                        30
+                        Days</button>
                 </div>
             </form>
         </div>
@@ -42,7 +58,8 @@
                 <input type="date" name="end_date" required class="form-control p-2">
             </div>
             <br />
-            <input type="submit" value="Get Historical Data" class="btn btn-primary p-2">
+            <input type="submit" value="Get Historical Data" class="btn btn-primary p-2"
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">
         </form>
         <br />
 
@@ -50,7 +67,9 @@
 
 
         <form action="/top5/{{ stock_symbol }}">
-            <button type="submit" class="btn btn-primary p-2">Top 5</button>
+            <button type="submit" class="btn btn-success p-2"
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Top
+                5</button>
         </form>
 
         <table class="table">
@@ -71,13 +90,17 @@
 
         <form action="/realtime" method="get">
             <div class="form-group">
-                <label for="stock_code" class="p-2">Enter Stock Symbol:</label>
+                <label for="stock_code" class="p-2">Enter Stock Symbol Seeing Real Time Stock:</label>
                 <input type="text" id="stock_code" name="stock_code" required class="form-control">
             </div>
+            <br />
 
-            <button type="submit" class="btn btn-primary p-2">Get Real-time Price</button>
+            <button type="submit" class="btn btn-success p-2"
+                style="--bs-btn-padding-y: .25rem; --bs-btn-padding-x: .5rem; --bs-btn-font-size: .75rem;">Get Real-time
+                Price</button>
         </form>
     </div>
+    <br />
     {% endblock %}
 
 </body>

@@ -1,25 +1,51 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<h1>{% block title %} Index {% endblock %}</h1>
-<table>
-    <tr>
-        {% for col in column_names %}
-        <th>{{col}}</th>
-        {% endfor %}
-    </tr>
-    {% for row in row_data %}
-    <tr>
-        {% for col, row_ in zip(column_names, row) %}
-        {% if col == link_column %}
-        <td>
-            <a href="/ticker/{{row_}}">{{row_}}</a>
-        </td>
-        {% else %}
-        <td>{{row_}}</td>
-        {% endif %}
-        {% endfor %}
-    </tr>
-    {% endfor %}
-</table>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    {% extends 'base.html' %}
+
+
+    {% block content %}
+    <form class="d-flex" role="search" action="/search" method="post">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+    <div class="container">
+        <h1 class="mt-4 mb-3">{% block title %} Index {% endblock %}</h1>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        {% for col in column_names %}
+                        <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in row_data %}
+                    <tr>
+                        {% for col, row_ in zip(column_names, row) %}
+                        {% if col == link_column %}
+                        <td>
+                            <a href="/ticker/{{ row_ }}">{{ row_ }}</a>
+                        </td>
+                        {% else %}
+                        <td>{{ row_ }}</td>
+                        {% endif %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
