@@ -19,7 +19,7 @@ We utilize an HTML template, Flask, and the Matplotlib library to fetch and disp
 ### Data Analysis and Visualization Plan: 
 Visitors can observe the closing prices of any companies in the S&P 500 through graphical representations created using Matplotlib. Additionally, detailed information is presented in a table format, aiding users in making informed decisions about their stock investments.
 The website also offers suggestions for the top 5 companies based on certain criteria, enhancing the chances of assisting users in their investment choices.
-Users also Real-time stock data is available to further support users in their investment decisions.
+Real-time stock data is available to further support users in their investment decisions.
 
 
 
