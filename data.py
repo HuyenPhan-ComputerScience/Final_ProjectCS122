@@ -30,6 +30,11 @@ def ticker(ticker):
         stock_symbol = ticker
         start_date = request.form['start_date']
         end_date = request.form['end_date']  
+
+        if not start_date:
+            start_date = None
+        if not end_date:
+            end_date = None
         # Fetch historical data using yfinance
         df = yf.download(stock_symbol, start=start_date, end=end_date)
 
@@ -40,6 +45,8 @@ def ticker(ticker):
         # Process data as needed
         data = df.reset_index().to_dict(orient='records')
         plot_url = generate_plot(df, stock_symbol)
+       
+
 
         return render_template('ticker.html', stock_symbol=stock_symbol, data=data, plot_url=plot_url)
     
@@ -55,9 +62,9 @@ def plot(ticker):
     if selected_days == '10':
         end_date = pd.Timestamp.now().date()
         start_date = end_date - pd.DateOffset(days=10)
-    elif selected_days == '2':
+    elif selected_days == '5':
         end_date = pd.Timestamp.now().date()
-        start_date = end_date - pd.DateOffset(days=2)
+        start_date = end_date - pd.DateOffset(days=5)
     elif selected_days == '15':
         end_date = pd.Timestamp.now().date()
         start_date = end_date - pd.DateOffset(days=15)
@@ -123,8 +130,10 @@ def search():
 def web_content_div(web_content, class_path):
     web_content_div = web_content.find('div', class_=class_path)
     try:
-        fin_stream = web_content_div.find_all('fin-streamer')  
-        texts = [fin_stream[0].get_text(), fin_stream[1].get_text(), fin_stream[2].get_text()]
+        span=web_content_div.find_all('span')
+        texts = [span[0].get_text(), span[1].get_text(), span[2].get_text()]
+        # fin_stream = web_content_div.find_all('fin-streamer')  
+        # texts = [fin_stream[0].get_text(), fin_stream[1].get_text(), fin_stream[2].get_text()]
     except AttributeError:
         texts = []
     return texts
@@ -171,9 +180,14 @@ def top5(ticker):
     return render_template('top5.html', column_names=df4.columns.values, row_data=list(df4.values.tolist()),
                            link_column="Symbol", zip=zip)
 
-
-
-
+@app.route('/references', methods=['POST', 'GET'])
+def reference():
+    
+    return render_template('reference.html', references=[
+        {"name": "Yahoo Finance Website", "url": "https://finance.yahoo.com/lookup"},
+        {"name": "Yfinance API", "url": "https://pypi.org/project/yfinance/"},
+        {"name": "SP500.CVS", "url": "#"}  
+    ])
    
 
 if __name__ == '__main__':

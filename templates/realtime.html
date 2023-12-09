@@ -34,15 +34,15 @@
 <body>
     {% extends 'base.html' %}
     {% block content %}
-    <h1>Real-Time Stock Data for {{ stock_code }}</h1>
+    <h1> Stock Data for {{ stock_code }}</h1>
 
 
 
     {% if stock_code %}
     <p>Stock Symbol: {{ stock_code }}</p>
-    <p>Price: {{ price }}</p>
-    <p>Change: {{ change }}</p>
-    <p>Percent Change: {{ percent }}</p>
+    <p>Change: {{ price }}</p>
+    <p>Percent Change: {{ change }}</p>
+    <p>Time Capture: {{ percent }}</p>
     {% else %}
     <p class="error-message">Real-time data not available for {{ stock_symbol }}.</p>
     {% endif %}
